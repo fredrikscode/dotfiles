@@ -1,4 +1,5 @@
 #!/bin/sh
+
 alias v="nvim"
 alias i="sudo pacman -S"
 alias r="sudo pacman -R"
