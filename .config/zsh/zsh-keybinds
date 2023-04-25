@@ -1,0 +1,8 @@
+#!/bin/sh
+
+bindkey '\e[H' beginning-of-line
+bindkey '\e[F' end-of-line
+bindkey '\e[3~' delete-char
+bindkey '\e[2~' overwrite-mode
+bindkey '\e[5~' history-beginning-search-backward
+bindkey '\e[6~' history-beginning-search-forward
