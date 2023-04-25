@@ -1,0 +1,8 @@
+#!/bin/sh
+alias v="nvim"
+alias i="sudo pacman -S"
+alias r="sudo pacman -R"
+alias q="sudo pacman -Q"
+alias yi="yay -S"
+alias yr="yay -R"
+alias yq="yay -Q"
