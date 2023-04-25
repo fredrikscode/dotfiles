@@ -14,12 +14,6 @@ bindkey '\e[2~' overwrite-mode
 bindkey '\e[5~' history-beginning-search-backward
 bindkey '\e[6~' history-beginning-search-forward
 
-# Aliases/alias functions
-alias v="nvim"
-alias i="sudo pacman -S"
-alias r="sudo pacman -R"
-alias q="sudo pacman -Q"
-alias yi="yay -S"
-alias yr="yay -R"
-alias yq="yay -Q"
-
+zsh_add_file "zsh-exports"
+zsh_add_file "zsh-aliases"
+#zsh_add_file "zsh-prompt"
