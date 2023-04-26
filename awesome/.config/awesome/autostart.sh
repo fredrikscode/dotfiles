@@ -7,6 +7,6 @@ run() {
   fi
 }
 
-run "feh" --randomize --bg-fill ~/.config/wallpapers/
+run "feh" --randomize --bg-fill ~/.wallpapers/
 run "$HOME/.config/polybar/launch.sh"
 run "picom"
