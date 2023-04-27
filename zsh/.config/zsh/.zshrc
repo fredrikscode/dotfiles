@@ -30,6 +30,9 @@ bindkey '\e[6~' history-beginning-search-forward
 # Aliases
 alias src="source $HOME/.config/zsh/.zshrc"
 
+alias ..="cd .."
+alias ...="cd ../.."
+
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
