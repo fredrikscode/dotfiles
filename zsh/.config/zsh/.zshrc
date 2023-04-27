@@ -27,6 +27,40 @@ bindkey '\e[2~' overwrite-mode
 bindkey '\e[5~' history-beginning-search-backward
 bindkey '\e[6~' history-beginning-search-forward
 
+# Functions
+function check_package() {
+    if [ $# -eq 0 ]
+    then
+        ehco "No argument supplied"
+        exit 1
+    fi
+
+    package=$1
+
+    # Check if the package is installed locally
+    if pacman -Q $package > /dev/null 2>&1
+    then
+        echo -e "Locally \033[32m✓\033[0m"
+    else
+        echo "Locally \033[31m✘\033[0m"
+    fi
+
+    # Check if the package is available in any of the available repositories
+    package_info=$(pacman -Ss "^$package$" | awk '/^community\//{print $2}' | xargs pacman -Si 2>/dev/null)
+    if [ -n "$package_info" ]
+    then
+        remote_version=$(echo "$package_info" | awk '/^Version/{print $3}' | tail -n 1)
+        if [ -n "$remote_version" ]
+        then
+            echo -e "Remote \033[32m✓\033[0m (version: $remote_version)"
+        else
+            echo "Remote \033[31m✘\033[0m"
+        fi
+    else
+        echo "Remote \033[31m✘\033[0m"
+    fi
+}
+
 # Aliases
 alias src="source $HOME/.config/zsh/.zshrc"
 
@@ -37,7 +71,8 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
 
-alias cu="sudo pacman -Syu"
+alias u="sudo pacman -Syu"
+alias fp="check_package"
 alias i="sudo pacman -S"
 alias r="sudo pacman -R"
 alias q="sudo pacman -Q"
