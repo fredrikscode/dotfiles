@@ -11,6 +11,10 @@ scrolling:
   history: 10000
   multiplier: 3
 
+cursor:
+  style: 
+    shape: underline
+
 font:
   normal:
     family: JetBrainsMono Nerd Font
@@ -27,11 +31,46 @@ font:
   size: 8
 draw_bold_text_with_bright_colors: true
 
+colors:
+  # Default colors
+  primary:
+    background: '#232C3F'
+    foreground: '#EBEBEB'
+
+  # Cursor colors
+  cursor:
+    text: '0xFF261E'
+    cursor: '#8592a3'
+
+  # Normal colors
+  normal:
+    black:   '0x0d0d0d'
+    red:     '0xFF301B'
+    green:   '0xA0E521'
+    yellow:  '0xFFC620'
+    blue:    '0x1BA6FA'
+    magenta: '0x8763B8'
+    cyan:    '0x21DEEF'
+    white:   '0xEBEBEB'
+
+  # Bright colors
+  bright:
+    black:   '0x6D7070'
+    red:     '0xFF4352'
+    green:   '0xB8E466'
+    yellow:  '0xFFD750'
+    blue:    '0x1BA6FA'
+    magenta: '0xA578EA'
+    cyan:    '0x73FBF1'
+    white:   '0xFEFEF8'
+
 #import:
 #  - ~/.config/alacritty/catppuccin-mocha.yml
 
 selection:
-  save_to_clipboard: false
+  save_to_clipboard: true
+
+live_config_reload: true
 
 shell:
   program: /usr/bin/zsh
