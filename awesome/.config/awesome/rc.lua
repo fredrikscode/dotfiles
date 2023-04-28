@@ -12,7 +12,7 @@ local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
---local naughty = require("naughty")
+local naughty = require("naughty")
 -- Declarative object management
 local ruled = require("ruled")
 local menubar = require("menubar")
@@ -21,17 +21,19 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+-- Load the notification style from a separate file
+local my_notification_style = dofile(os.getenv("HOME") .. "/.config/awesome/notification_style.lua")
+
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
--- naughty.connect_signal("request::display_error", function(message, startup)
---     naughty.notification {
---         urgency = "critical",
---         title   = "Oops, an error happened"..(startup and " during startup!" or "!"),
---         message = message
---     }
--- end)
--- }}}
+naughty.connect_signal("request::display_error", function(message, startup)
+    naughty.notification {
+        urgency = "critical",
+        title   = "Oops, an error happened"..(startup and " during startup!" or "!"),
+        message = message
+    }
+end)
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
@@ -121,7 +123,7 @@ mytextclock = wibox.widget.textclock()
 
 screen.connect_signal("request::desktop_decoration", function(s)
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4" }, s, awful.layout.layouts[1])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -533,9 +535,9 @@ ruled.notification.connect_signal('request::rules', function()
     }
 end)
 
--- naughty.connect_signal("request::display", function(n)
---     naughty.layout.box { notification = n }
--- end)
+naughty.connect_signal("request::display", function(n)
+    naughty.layout.box { notification = n }
+end)
 
 -- }}}
 
@@ -552,3 +554,20 @@ beautiful.useless_gap=5
 
 -- Autostart
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
+
+-- Create a notification using the my_notification_style table
+local my_notification = naughty.notify({
+    title = "My Notification Title",
+    text = "My notification message.",
+    timeout = my_notification_style.timeout,
+    position = my_notification_style.position,
+    margin = my_notification_style.margin,
+    height = my_notification_style.height,
+    width = my_notification_style.width,
+    font = my_notification_style.font,
+    fg = my_notification_style.fg,
+    bg = my_notification_style.bg
+})
+
+-- Show the notification
+-- my_notification.show()
