@@ -551,23 +551,24 @@ end)
 
 -- Custom configs
 beautiful.useless_gap=5
+beautiful.border_width = 0
 
 -- Autostart
 awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 
 -- Create a notification using the my_notification_style table
-local my_notification = naughty.notify({
-    title = "My Notification Title",
-    text = "My notification message.",
-    timeout = my_notification_style.timeout,
-    position = my_notification_style.position,
-    margin = my_notification_style.margin,
-    height = my_notification_style.height,
-    width = my_notification_style.width,
-    font = my_notification_style.font,
-    fg = my_notification_style.fg,
-    bg = my_notification_style.bg
-})
+-- local my_notification = naughty.notify({
+--     title = "My Notification Title",
+--     text = "My notification message.",
+--     timeout = my_notification_style.timeout,
+--     position = my_notification_style.position,
+--     margin = my_notification_style.margin,
+--     height = my_notification_style.height,
+--     width = my_notification_style.width,
+--     font = my_notification_style.font,
+--     fg = my_notification_style.fg,
+--     bg = my_notification_style.bg
+-- })
 
 -- Show the notification
 -- my_notification.show()
