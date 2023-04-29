@@ -5,19 +5,49 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Theme
-source $HOME/.config/zsh/themes/powerlevel10k/powerlevel10k.zsh-theme
+function plugin-load {
+  local repo plugdir initfile initfiles=()
+  : ${ZPLUGINDIR:=${ZDOTDIR:-~/.config/zsh}/plugins}
+  for repo in $@; do
+    plugdir=$ZPLUGINDIR/${repo:t}
+    initfile=$plugdir/${repo:t}.plugin.zsh
+    if [[ ! -d $plugdir ]]; then
+      echo "Cloning $repo..."
+      git clone -q --depth 1 --recursive --shallow-submodules \
+        https://github.com/$repo $plugdir
+    fi
+    if [[ ! -e $initfile ]]; then
+      initfiles=($plugdir/*.{plugin.zsh,zsh-theme,zsh,sh}(N))
+      (( $#initfiles )) || { echo >&2 "No init file '$repo'." && continue }
+      ln -sf $initfiles[1] $initfile
+    fi
+    fpath+=$plugdir
+    (( $+functions[zsh-defer] )) && zsh-defer . $initfile || . $initfile
+  done
+}
 
-# Plugins
-autoload -Uz compinit promptinit vcs_info
+repos=(
+  marlonrichert/zsh-autocomplete
+  zsh-users/zsh-syntax-highlighting
+)
+
+# now load your plugins
+plugin-load $repos
+
+autoload -Uz promptinit vcs_info
 precmd() { vcs_info }
-compinit
 promptinit
 
-# Exports
+export HISTSIZE=10000
+export SAVEHIST=10000
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 export BROWSER="brave"
+
+# Theme
+source $HOME/.config/zsh/themes/powerlevel10k/powerlevel10k.zsh-theme
 
 # Keybinds
 bindkey '\e[H' beginning-of-line
@@ -27,50 +57,17 @@ bindkey '\e[2~' overwrite-mode
 bindkey '\e[5~' history-beginning-search-backward
 bindkey '\e[6~' history-beginning-search-forward
 
-# Functions
-function check_package() {
-    if [ $# -eq 0 ]
-    then
-        ehco "No argument supplied"
-        exit 1
-    fi
-
-    package=$1
-
-    # Check if the package is installed locally
-    if pacman -Q $package > /dev/null 2>&1
-    then
-        echo -e "Locally \033[32m✓\033[0m"
-    else
-        echo "Locally \033[31m✘\033[0m"
-    fi
-
-    # Check if the package is available in any of the available repositories
-    package_info=$(pacman -Ss "^$package$" | awk '/^community\//{print $2}' | xargs pacman -Si 2>/dev/null)
-    if [ -n "$package_info" ]
-    then
-        remote_version=$(echo "$package_info" | awk '/^Version/{print $3}' | tail -n 1)
-        if [ -n "$remote_version" ]
-        then
-            echo -e "Remote \033[32m✓\033[0m (version: $remote_version)"
-        else
-            echo "Remote \033[31m✘\033[0m"
-        fi
-    else
-        echo "Remote \033[31m✘\033[0m"
-    fi
-}
-
 # Aliases
 alias src="source $HOME/.config/zsh/.zshrc"
-
 alias ..="cd .."
 alias ...="cd ../.."
-
+alias ls="ls --color -l -h"
+alias grep="grep -n --color"
+alias mkdir="mkdir -pv"
+alias c="clear -x"
 alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
-
 alias u="sudo pacman -Syu"
 alias fp="check_package"
 alias i="sudo pacman -S"
@@ -79,11 +76,7 @@ alias q="sudo pacman -Q"
 alias yi="yay -S"
 alias yr="yay -R"
 alias yq="yay -Q"
-
 alias v="nvim"
-
-# Unsure of title
-zstyle ':completion:*' menu select # Autocompletion with arrow-key interface
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
 [[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
