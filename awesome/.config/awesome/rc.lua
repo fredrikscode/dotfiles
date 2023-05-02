@@ -572,3 +572,10 @@ awful.spawn.with_shell("~/.config/awesome/autostart.sh")
 
 -- Show the notification
 -- my_notification.show()
+
+-- Custmized hotkeys window
+beautiful.hotkeys_font = "JetBrains Mono 8"
+beautiful.hotkeys_description_font = "JetBrains Mono 8"
+beautiful.hotkeys_bg = "#010B13"
+beautiful.hotkeys_fg = "#8592a3"
+beautiful.hotkeys_modifiers_fg = "#00BFFF"
