@@ -35,6 +35,8 @@ autoload -Uz promptinit vcs_info
 precmd() { vcs_info }
 promptinit
 
+export PYTHONUSERBASE=$HOME/.local
+
 export HISTSIZE=10000
 export SAVEHIST=10000
 setopt HIST_IGNORE_ALL_DUPS
@@ -52,6 +54,7 @@ bindkey '\e[2~' overwrite-mode
 bindkey '\e[5~' history-beginning-search-backward
 bindkey '\e[6~' history-beginning-search-forward
 
+alias ssh="TERM=xterm-256color $(which ssh)"
 alias src="source $HOME/.config/zsh/.zshrc"
 alias ..="cd .."
 alias ...="cd ../.."
